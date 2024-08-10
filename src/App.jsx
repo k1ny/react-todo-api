@@ -4,6 +4,7 @@ import { MyButton } from "./ui/MyButton/MyButton";
 import { MyInput } from "./ui/MyInput/MyInput";
 import { PostList } from "./components/PostList/PostList";
 import { useRef } from "react";
+import { CreateForm } from "./components/CreateForm/CreateForm";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -16,20 +17,31 @@ function App() {
   const titleRef = useRef();
   const descriptionRef = useRef();
 
-  const addNewPost = (newPost) => {
-    setPosts(...posts, newPost);
+  const addNewPost = (event) => {
+    event.preventDefault();
+    const id = Date.now();
+    const titleValue = titleRef.current.value;
+    const descriptionValue = descriptionRef.current.value;
+    const newPost = {
+      id: id,
+      title: titleValue,
+      description: descriptionValue,
+    };
+    setPosts([...posts, newPost]);
+    titleRef.current.value = "";
+    descriptionRef.current.value = "";
   };
+
   const removePost = (postId) => {
     setPosts(posts.filter((post) => post.id !== postId));
   };
-
   return (
     <div>
-      <form>
-        <MyInput type="text" ref={titleRef} />
-        <MyInput type="text" ref={descriptionRef} />
-        <MyButton onClick={addNewPost}>Создать</MyButton>
-      </form>
+      <CreateForm
+        addFunc={addNewPost}
+        titleRef={titleRef}
+        descriptionRef={descriptionRef}
+      />
       <PostList posts={posts} remove={removePost} />
     </div>
   );
