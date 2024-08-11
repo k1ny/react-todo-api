@@ -69,6 +69,7 @@ function App() {
       >
         <MyInput
           placeholder="Поиск по названию"
+          style={{ width: "500px" }}
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
         />
