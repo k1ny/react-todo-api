@@ -4,6 +4,8 @@ import { MyButton } from "./ui/MyButton/MyButton";
 import { PostList } from "./components/PostList/PostList";
 import { CreateForm } from "./components/CreateForm/CreateForm";
 import Modal from "./components/Modal/Modal";
+import { MyInput } from "./ui/MyInput/MyInput";
+import { useMemo } from "react";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -37,10 +39,21 @@ function App() {
     setIsCreateFormOpen(false);
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchedPosts = useMemo(() => {
+    return posts.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [posts, searchQuery]);
+
   return (
     <div>
       <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "10px",
+        }}
       >
         <MyButton
           onClick={(e) => {
@@ -51,7 +64,15 @@ function App() {
           Создать новое задание
         </MyButton>
       </div>
-
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "6px" }}
+      >
+        <MyInput
+          placeholder="Поиск по названию"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+        />
+      </div>
       <Modal
         handleClose={() => setIsCreateFormOpen(false)}
         isOpen={isCreateFormOpen}
@@ -63,7 +84,7 @@ function App() {
         />
       </Modal>
 
-      <PostList posts={posts} remove={removePost} />
+      <PostList posts={searchedPosts} remove={removePost} />
     </div>
   );
 }
