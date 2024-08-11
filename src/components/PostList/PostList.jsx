@@ -3,10 +3,11 @@ import { PostItem } from "../PostItem/postItem";
 export const PostList = ({ posts, remove }) => {
   return (
     <div>
-      {posts.map((post) => (
+      {posts.map((post, index) => (
         <PostItem
           key={post.id}
           id={post.id}
+          number={index + 1}
           title={post.title}
           description={post.description}
           remove={remove}

@@ -1,11 +1,11 @@
 import { MyButton } from "../../ui/MyButton/MyButton";
 import styles from "./postItem.module.css";
-export const PostItem = ({ id, title, description, remove }) => {
+export const PostItem = ({ id, number, title, description, remove }) => {
   return (
     <div className={styles.postItem}>
       <div>
         <strong>
-          {id}. {title}
+          {number}. {title}
         </strong>
         <p>{description}</p>
       </div>

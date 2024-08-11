@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
 import { MyButton } from "./ui/MyButton/MyButton";
-import { MyInput } from "./ui/MyInput/MyInput";
 import { PostList } from "./components/PostList/PostList";
-import { useRef } from "react";
 import { CreateForm } from "./components/CreateForm/CreateForm";
+import Modal from "./components/Modal/Modal";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -17,31 +16,53 @@ function App() {
   const titleRef = useRef();
   const descriptionRef = useRef();
 
-  const addNewPost = (event) => {
-    event.preventDefault();
-    const id = Date.now();
-    const titleValue = titleRef.current.value;
-    const descriptionValue = descriptionRef.current.value;
-    const newPost = {
-      id: id,
-      title: titleValue,
-      description: descriptionValue,
-    };
-    setPosts([...posts, newPost]);
-    titleRef.current.value = "";
-    descriptionRef.current.value = "";
-  };
-
   const removePost = (postId) => {
     setPosts(posts.filter((post) => post.id !== postId));
   };
+
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+
+  const addNewPost = (event) => {
+    event.preventDefault();
+
+    const newPost = {
+      id: Date.now(),
+      title: titleRef.current.value,
+      description: descriptionRef.current.value,
+    };
+    setPosts([...posts, newPost]);
+
+    titleRef.current.value = "";
+    descriptionRef.current.value = "";
+    setIsCreateFormOpen(false);
+  };
+
   return (
     <div>
-      <CreateForm
-        addFunc={addNewPost}
-        titleRef={titleRef}
-        descriptionRef={descriptionRef}
-      />
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
+      >
+        <MyButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsCreateFormOpen(true);
+          }}
+        >
+          Создать новое задание
+        </MyButton>
+      </div>
+
+      <Modal
+        handleClose={() => setIsCreateFormOpen(false)}
+        isOpen={isCreateFormOpen}
+      >
+        <CreateForm
+          addFunc={addNewPost}
+          titleRef={titleRef}
+          descriptionRef={descriptionRef}
+        />
+      </Modal>
+
       <PostList posts={posts} remove={removePost} />
     </div>
   );
