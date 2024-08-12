@@ -2,6 +2,8 @@ import { createPortal } from "react-dom";
 import { useEffect, useRef } from "react";
 import styles from "./modal.module.css";
 
+const portal = document.getElementById("pop-up");
+
 export const Modal = ({ children, isOpen, handleClose }) => {
   const modalRef = useRef(null);
 
@@ -21,8 +23,6 @@ export const Modal = ({ children, isOpen, handleClose }) => {
     }
   }, [isOpen, handleClose]);
 
-  const portal = document.getElementById("pop-up");
-
   if (!isOpen) return null;
 
   return createPortal(
@@ -34,5 +34,3 @@ export const Modal = ({ children, isOpen, handleClose }) => {
     portal,
   );
 };
-
-export default Modal;

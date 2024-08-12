@@ -1,6 +1,6 @@
 import { PostItem } from "../PostItem/postItem";
 
-export const PostList = ({ posts, remove }) => {
+export const PostList = ({ posts, remove, edit }) => {
   return (
     <div>
       {posts.map((post, index) => (
@@ -11,6 +11,7 @@ export const PostList = ({ posts, remove }) => {
           title={post.title}
           description={post.description}
           remove={remove}
+          edit={edit}
         />
       ))}
     </div>
